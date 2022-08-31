@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string name="app_name">Alma</string>
+<string name="facebook_app_id">1160238884549787</string>
+<string name="fb_login_protocol_scheme">fb1160238884549787</string>
+<string name="facebook_client_token">1160238884549787|fb1160238884549787</string>
+</resources>
