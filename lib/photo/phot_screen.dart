@@ -18,6 +18,7 @@ class PhotoPreviewScreen extends StatefulWidget {
 
 class _PhotoPreviewScreenState extends State<PhotoPreviewScreen> {
   bool _isLoading = false;
+  String? type;
 
   File? _photo;
   void clearImage() {
@@ -40,6 +41,9 @@ class _PhotoPreviewScreenState extends State<PhotoPreviewScreen> {
                   title: const Text("Gallery"),
                   onTap: () {
                     getImages(ImageSource.gallery);
+                    setState(() {
+                      type = "image";
+                    });
                   },
                   leading: const Icon(Icons.account_box, color: kPrimaryColor),
                 ),
@@ -94,6 +98,7 @@ class _PhotoPreviewScreenState extends State<PhotoPreviewScreen> {
         file: _photo!,
         username: username,
         avatarUrl: avatarUrl,
+        type: type!,
         // address: address,
       );
       if (res == 'success') {

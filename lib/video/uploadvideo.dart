@@ -20,6 +20,7 @@ class Videoo extends StatefulWidget {
 }
 
 class _VideooState extends State<Videoo> {
+  String? type;
   File? _video;
   VideoPlayerController? _videoPlayerController;
   bool _isLoading = false;
@@ -39,6 +40,9 @@ class _VideooState extends State<Videoo> {
                   title: const Text("Gallery"),
                   onTap: () {
                     _getVideo(ImageSource.gallery);
+                    setState(() {
+                      type = "video";
+                    });
                   },
                   leading: const Icon(Icons.account_box, color: kPrimaryColor),
                 ),
@@ -60,7 +64,7 @@ class _VideooState extends State<Videoo> {
     String uid,
     String username,
     String avatarUrl,
-   // String address,
+    // String address,
   ) async {
     setState(() {
       _isLoading = true;
@@ -71,13 +75,14 @@ class _VideooState extends State<Videoo> {
         return;
       }
       String res = await FirestoreMethod().uploadPost(
-          uid: uid,
-          file: _video!,
-          username: username,
-          avatarUrl: avatarUrl,
-          //address: address
-          //video: _video!,
-          );
+        uid: uid,
+        file: _video!,
+        username: username,
+        avatarUrl: avatarUrl,
+        type: type!,
+        //address: address
+        //video: _video!,
+      );
       if (res == 'success') {
         setState(() {
           _isLoading = false;
@@ -185,8 +190,11 @@ class _VideooState extends State<Videoo> {
                 TextButton(
                     onPressed: () {
                       //print('uid:  ${user.uid}');
-                      postImage(user.uid, user.username, user.avatarUrl,
-                          );
+                      postImage(
+                        user.uid,
+                        user.username,
+                        user.avatarUrl,
+                      );
                     },
                     child: Text(
                       'Post',

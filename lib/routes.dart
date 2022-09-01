@@ -21,7 +21,7 @@ import 'screen_for_tlor_btn/signUp/sign_up.dart';
 
 final Map<String, WidgetBuilder> routes = {
   SplashScreen.routeName: (context) => const SplashScreen(),
-  WelcomeScreen.routeName: (context) => WelcomeScreen(),
+  WelcomeScreen.routeName: (context) => const WelcomeScreen(),
   SignInScreenC.routeName: (context) => const SignInScreenC(),
   SignInScreenT.routeName: (context) => const SignInScreenT(),
   ForgotPasswordScreen.routeName: (context) => const ForgotPasswordScreen(),

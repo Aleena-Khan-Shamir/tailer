@@ -16,6 +16,7 @@ class FirestoreMethod {
     // String description,
     required String username,
     required String avatarUrl,
+    required String type,
     // required String address,
   }) async {
     String res = 'some error occured';
@@ -35,8 +36,16 @@ class FirestoreMethod {
         imageUrl: photoUrl,
         videoUrl: photoUrl,
         avatarUrl: avatarUrl,
+        type: type,
       );
-      _firestore.collection('post').doc(postId).set(post.toJson());
+      _firestore
+          // .collection("userData")
+          // .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('post')
+          .doc(postId)
+          .set(
+            post.toJson(),
+          );
       res = 'success';
     } catch (err) {
       res = err.toString();

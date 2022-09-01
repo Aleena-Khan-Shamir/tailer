@@ -11,6 +11,7 @@ class Post {
   final String avatarUrl;
   String? imageUrl;
   String? videoUrl;
+  final String type;
   Post({
     //required this.description,
     required this.uid,
@@ -21,6 +22,7 @@ class Post {
     required this.avatarUrl,
     required this.imageUrl,
     required this.videoUrl,
+    required this.type,
   });
 
   factory Post.fromSnap(DocumentSnapshot snap) {
@@ -36,6 +38,7 @@ class Post {
       avatarUrl: snapshot['avatarUrl'],
       imageUrl: snapshot['imageUrl'],
       videoUrl: snapshot['videoUrl'],
+      type: snapshot['type'],
     );
   }
 
@@ -49,5 +52,6 @@ class Post {
         'avatarUrl': avatarUrl,
         'imageUrl': imageUrl,
         'videoUrl': videoUrl,
+        'type': type,
       };
 }

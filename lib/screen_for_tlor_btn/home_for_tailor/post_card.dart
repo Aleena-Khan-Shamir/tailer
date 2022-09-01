@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:video_player/video_player.dart';
 
 class PostCardForTailor extends StatefulWidget {
   final snap;
@@ -20,10 +21,20 @@ class PostCardForTailor extends StatefulWidget {
 
 class _PostCardForTailorState extends State<PostCardForTailor> {
   var userData = {};
+  late VideoPlayerController controller;
   @override
   void initState() {
     super.initState();
     getData();
+    controller = VideoPlayerController.network(widget.snap["videoUrl"])
+      ..initialize().then((value) {
+        setState(() {
+          controller.play();
+          controller.setLooping(
+            true,
+          );
+        });
+      });
   }
 
   getData() async {
@@ -42,7 +53,7 @@ class _PostCardForTailorState extends State<PostCardForTailor> {
     final data = widget.snap.data();
     String? fileName;
     //  print(snap["avatarUrl"]);
-    return Container(
+    return SizedBox(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -91,30 +102,32 @@ class _PostCardForTailorState extends State<PostCardForTailor> {
                 IconButton(
                     onPressed: () {
                       showDialog(
-                          context: context,
-                          builder: (_) => Dialog(
-                              child: ListView(
-                                  padding: EdgeInsets.symmetric(vertical: 15.h),
-                                  shrinkWrap: true,
-                                  children: [
-                                    'Delete',
-                                  ]
-                                      .map(
-                                        (e) => InkWell(
-                                          onTap: () {
-                                            FirestoreMethod.deletePost(
-                                                data['postId']);
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Container(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 13.h,
-                                                horizontal: 17.w),
-                                            child: Text(e),
-                                          ),
-                                        ),
-                                      )
-                                      .toList())));
+                        context: context,
+                        builder: (_) => Dialog(
+                          child: ListView(
+                            padding: EdgeInsets.symmetric(vertical: 15.h),
+                            shrinkWrap: true,
+                            children: [
+                              'Delete',
+                            ]
+                                .map(
+                                  (e) => InkWell(
+                                    onTap: () {
+                                      FirestoreMethod.deletePost(
+                                          data['postId']);
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 13.h, horizontal: 17.w),
+                                      child: Text(e),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        ),
+                      );
                     },
                     icon: const Icon(Icons.more_vert))
               ],
@@ -124,11 +137,18 @@ class _PostCardForTailorState extends State<PostCardForTailor> {
           SizedBox(
             height: 350.h,
             width: double.infinity,
-            child: fileName != null
+            child: data['type'] == "image"
                 ? Image.network(
                     data['imageUrl'],
                   )
-                : Image.network(data['videoUrl']),
+                : controller.value.isInitialized
+                    ? AspectRatio(
+                        aspectRatio: controller.value.aspectRatio,
+                        child: VideoPlayer(controller),
+                      )
+                    : const Center(
+                        child: CircularProgressIndicator(),
+                      ),
           ),
 
           Container(

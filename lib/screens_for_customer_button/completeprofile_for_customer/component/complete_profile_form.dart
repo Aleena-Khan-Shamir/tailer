@@ -89,7 +89,7 @@ class _CompleteProfileFormCState extends State<CompleteProfileFormC> {
                 text: 'Continue',
                 press: () {
                   AuthenticationHelper.compProfile(fNameC.text, lNameC.text,
-                          pNumberC.text, addressC.text, _photo)
+                          pNumberC.text, addressC.text, _photo!)
                       .then((value) {
                     print('Customer Profile Screen:${value}');
                     Navigator.push(

@@ -97,18 +97,18 @@ class AuthenticationHelper {
     String lastName,
     String phoneNumber,
     String address,
-    File? file,
+    File file,
   ) async {
     var firebaseUser = FirebaseAuth.instance.currentUser;
     //File? file;
     var downloadUrl =
-        await StorageMethods().uploadImageToStorage('profilePics', file!, true);
+        await StorageMethods().uploadImageToStorage('profilePics', file, true);
     try {
       await FirebaseFirestore.instance
           .collection('userData')
-          .doc(firebaseUser!.uid)
+          .doc(firebaseUser?.uid)
           .set({
-        'uid': firebaseUser.uid,
+        'uid': firebaseUser?.uid,
         "firstName": firstName,
         "lastName": lastName,
         "phoneNumber": phoneNumber,
